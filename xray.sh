@@ -14,7 +14,7 @@ timedatectl set-timezone Asia/Shanghai
 v2uuid=6699b70f-28c3-51a2-857c-d17213f583e9
 
 # 生成base64
-psk=$(openssl rand -base64 32)
+psk=$(openssl rand -base64 16)
 
 # 下载并执行脚本，将输出导入当前shell环境
 eval "$(curl -fsSL https://raw.githubusercontent.com/passeway/sing-box/main/wireguard.sh)"
@@ -184,7 +184,7 @@ EOF
     rm -f tcp-wss.sh install-release.sh
     # 生成客户端配置信息
     cat << EOF > /usr/local/etc/xray/config.txt
-ss://2022-blake3-chacha20-poly1305:${psk}@${HOST_IP}:${PORT2}#${IP_COUNTRY}
+ss://2022-blake3-aes-128-gcm:${psk}@${HOST_IP}:${PORT2}#${IP_COUNTRY}
 
 ${IP_COUNTRY} = ss, ${HOST_IP}, ${PORT2}, encrypt-method=2022-blake3-aes-128-gcm, password=${psk}, udp-relay=true
 
