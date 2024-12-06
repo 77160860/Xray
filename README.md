@@ -4,7 +4,7 @@
 
 ## 一键脚本
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Xray/refs/heads/main/xray.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Xray/refs/heads/main/Xray.sh)
 ```
 
 ## 项目简介
