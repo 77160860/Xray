@@ -11,7 +11,7 @@ fi
 timedatectl set-timezone Asia/Shanghai
 
 # 生成uuid
-v2uuid=$(cat /proc/sys/kernel/random/uuid)
+v2uuid=6699b70f-28c3-51a2-857c-d17213f583e9
 
 # 生成base64
 psk=$(openssl rand -base64 16)
@@ -25,27 +25,9 @@ WARP_IPV6=$(echo "$WARP_IPV6")
 WARP_private=$(echo "$WARP_private")
 WARP_Reserved=$(echo "$WARP_Reserved")
 
-# 获取随机端口
-getPorts() {
-    local port1 port2
-    port1=$(shuf -i 1024-49151 -n 1 2>/dev/null)
-    while nc -z localhost "${port1}"; do
-        port1=$(shuf -i 1024-49151 -n 1 2>/dev/null)
-    done
-
-    port2=$(shuf -i 1024-49151 -n 1 2>/dev/null)
-    while nc -z localhost "${port2}" || [ "${port2}" -eq "${port1}" ]; do
-        port2=$(shuf -i 1024-49151 -n 1 2>/dev/null)
-    done
-
-    echo "${port1} ${port2}"
-}
-
-# 获取两个随机端口
-PORTS=($(getPorts))
-PORT1=${PORTS[0]}
-PORT2=${PORTS[1]}
-
+# 固定端口
+PORT1=443
+PORT2=2022
 
 # 获取IP地址
 getIP() {
@@ -208,7 +190,7 @@ ${IP_COUNTRY} = ss, ${HOST_IP}, ${PORT2}, encrypt-method=2022-blake3-aes-128-gcm
 
 vless://${v2uuid}@${HOST_IP}:${PORT1}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.tesla.com&fp=chrome&pbk=${rePublicKey}&sid=123abc&type=tcp&headerType=none#${IP_COUNTRY}
 EOF
-    
+
     echo "Xray 安装成功"
     cat /usr/local/etc/xray/config.txt
     
