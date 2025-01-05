@@ -11,7 +11,7 @@ fi
 timedatectl set-timezone Asia/Shanghai
 
 # 生成uuid
-v2uuid=6699b70f-28c3-51a2-857c-d17213f583e9
+v2uuid=8c3f2083-62e8-56ad-fe13-872a266a8ed8
 
 # 生成base64
 psk=cCeXlcvWv8WVn0Ahjfj/Fw==
