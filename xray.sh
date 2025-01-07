@@ -13,21 +13,8 @@ timedatectl set-timezone Asia/Shanghai
 # 生成uuid
 v2uuid=8c3f2083-62e8-56ad-fe13-872a266a8ed8
 
-# 生成base64
-psk=cCeXlcvWv8WVn0Ahjfj/Fw==
-
-# 下载并执行脚本，将输出导入当前shell环境
-eval "$(curl -fsSL https://raw.githubusercontent.com/passeway/sing-box/main/wireguard.sh)"
-
-# 提取变量
-WARP_IPV4=$(echo "$WARP_IPV4")
-WARP_IPV6=$(echo "$WARP_IPV6")
-WARP_private=$(echo "$WARP_private")
-WARP_Reserved=$(echo "$WARP_Reserved")
-
 # 固定端口
 PORT1=443
-PORT2=2022
 
 # 获取IP地址
 getIP() {
@@ -55,7 +42,7 @@ reconfig() {
     rePrivateKey=-FVDzv68IC17fJVlNDlhrrgX44WeBfbhwjWpCQVXGHE
     rePublicKey=PGG2EYOvsFt2lAQTD7lqHeRxz2KxvllEDKcUrtizPBU
 
-    # 重新配置Xray
+    # 配置Xray，仅使用Reality
     cat >/usr/local/etc/xray/config.json <<EOF
 {
   "log": {
@@ -69,26 +56,7 @@ reconfig() {
   },
   "routing": {
     "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "domain": [
-          "geosite:openai"
-        ],
-        "outboundTag": "warp"
-      },
-      {
-        "domain": [
-          "geosite:netflix"
-        ],
-        "outboundTag": "warp"
-      },
-      {
-        "domain": [
-          "geosite:disney"
-        ],
-        "outboundTag": "warp"
-      }
-    ]
+    "rules": []
   },
   "inbounds": [
     {
@@ -109,7 +77,7 @@ reconfig() {
         "realitySettings": {
           "dest": "1.1.1.1:443",
           "serverNames": [
-            "www.tesla.com"
+            "www.nazhumi.com"
           ],
           "privateKey": "${rePrivateKey}",
           "shortIds": [
@@ -127,15 +95,6 @@ reconfig() {
         ],
         "routeOnly": true
       }
-    },
-    {
-      "port": ${PORT2},
-      "protocol": "shadowsocks",
-      "settings": {
-        "method": "2022-blake3-aes-128-gcm",
-        "password": "${psk}",
-        "network": "tcp,udp"
-      }
     }
   ],
   "outbounds": [
@@ -145,29 +104,6 @@ reconfig() {
         "domainStrategy": "UseIP"
       },
       "tag": "direct"
-    },
-    {
-      "protocol": "wireguard",
-      "settings": {
-        "secretKey": "${WARP_private}",
-        "address": [
-          "172.16.0.2/32",
-          "${WARP_IPV6}/128"
-        ],
-        "peers": [
-          {
-            "publicKey": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-            "allowedIPs": [
-              "0.0.0.0/0",
-              "::/0"
-            ],
-            "endpoint": "${WARP_IPV4}:2408"
-          }
-        ],
-        "reserved": [${WARP_Reserved}],
-        "mtu": 1280
-      },
-      "tag": "warp"
     }
   ]
 }
@@ -183,16 +119,11 @@ EOF
     rm -f tcp-wss.sh install-release.sh
     # 生成客户端配置信息
     cat << EOF > /usr/local/etc/xray/config.txt
-ss://2022-blake3-aes-128-gcm:${psk}@${HOST_IP}:${PORT2}#${IP_COUNTRY}
-
-${IP_COUNTRY} = ss, ${HOST_IP}, ${PORT2}, encrypt-method=2022-blake3-aes-128-gcm, password=${psk}, udp-relay=true
-
 vless://${v2uuid}@${HOST_IP}:${PORT1}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.nazhumi.com&fp=chrome&pbk=${rePublicKey}&sid=123abc&type=tcp&headerType=none#${IP_COUNTRY}
 EOF
 
     echo "Xray 安装成功"
     cat /usr/local/etc/xray/config.txt
-    
 }
 
 install_xray
