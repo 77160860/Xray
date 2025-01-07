@@ -12,8 +12,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Xray/refs/heads/mai
 
 - 安装 Xray 配置 ss vless-reality 协议
 
-- 自带 wireguard 出站解锁openai netflix disney
-
 ## Xray指令
 启动 Xray 服务
 ```
