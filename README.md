@@ -10,7 +10,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Xray/refs/heads/mai
 ## 项目简介
 - 输出客户端配置 url 方便快速设置
 
-- 安装 Xray 配置 ss vless-reality 协议
+- 安装 Xray 配置 vless-reality 协议
 
 ## Xray指令
 启动 Xray 服务
@@ -62,7 +62,6 @@ cp /etc/letsencrypt/live/example.com/privkey.pem /usr/local/etc/xray/privkey.pem
 sudo chmod 755 /usr/local/etc/xray/fullchain.pem
 sudo chmod 755 /usr/local/etc/xray/privkey.pem
 ```
-
 
 ## 项目地址：https://github.com/xtls/xray-core
 
