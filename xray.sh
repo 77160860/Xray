@@ -78,7 +78,7 @@ reconfig() {
         "realitySettings": {
           "dest": "1.1.1.1:443",
           "serverNames": [
-            "www.joom.com"
+            "www.nazhumi.com"
           ],
           "privateKey": "${rePrivateKey}",
           "shortIds": [
@@ -120,7 +120,7 @@ EOF
     rm -f tcp-wss.sh install-release.sh
     # 生成客户端配置信息
     cat << EOF > /usr/local/etc/xray/config.txt
-vless://${v2uuid}@${HOST_IP}:${PORT1}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.joom.com&fp=chrome&pbk=${rePublicKey}&sid=123abc&type=tcp&headerType=none#${IP_COUNTRY}
+vless://${v2uuid}@${HOST_IP}:${PORT1}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.nazhumi.com&fp=chrome&pbk=${rePublicKey}&sid=123abc&type=tcp&headerType=none#${IP_COUNTRY}
 EOF
 
     echo "Xray 安装成功"
